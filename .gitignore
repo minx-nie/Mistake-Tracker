@@ -1,0 +1,20 @@
+# --- Python cơ bản ---
+__pycache__/
+*.py[cod]
+*$py.class
+
+# --- Môi trường ảo ---
+venv/
+.venv/
+env/
+ENV/
+
+# --- Dữ liệu cá nhân của dự án này ---
+mistakes.json
+
+# --- File hệ thống & IDE ---
+.DS_Store
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
