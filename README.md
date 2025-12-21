@@ -1,3 +1,10 @@
+Bình tĩnh, lỗi nhỏ thôi! 😅
+
+Lý do bị lỗi là ở phần **English -> Interface Preview**, bạn mở thẻ code ````text` nhưng **quên đóng thẻ** ````` lại. Thế là nó "nuốt" luôn cả phần License và phần Tiếng Việt bên dưới vào trong khung code.
+
+Đây là bản **đã sửa lỗi**, bạn copy đè lên toàn bộ file cũ là đẹp ngay:
+
+```markdown
 # 📉 Mistake Tracker
 
 <div align="center">
@@ -86,6 +93,8 @@ Subject         | Total mistakes | Rate
 Math            | 10             | 66.7%
 English         | 3              | 20.0%
 Coding          | 2              | 13.3%
+
+```
 
 ---
 
@@ -176,5 +185,7 @@ Coding          | 2              | 13.3%
 
 MIT License
 Tác giả: **Minx-nie**
+
+```
 
 ```
