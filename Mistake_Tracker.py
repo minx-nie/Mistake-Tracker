@@ -24,7 +24,8 @@ def load_data():
 
 def backup_data():
     if os.path.exists(DATA_FILE):
-        backup_file = DATA_FILE + ".bak"
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        backup_file = f"{DATA_FILE}.{timestamp}.bak"
         try:
             shutil.copy2(DATA_FILE, backup_file)
             print(f"[!] Backup created at {backup_file}")
