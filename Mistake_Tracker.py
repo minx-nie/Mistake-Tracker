@@ -74,7 +74,7 @@ def add_mistake(data):
     save_data(data)
     print("[!] Mistake added successfully!\n")
 
-def view_mistakes(data):
+def view_mistakes(data, page_size=10):
     print("\n--- [*] View Mistakes ---")
     if not data:
         print("No mistakes recorded yet.\n")
@@ -89,10 +89,20 @@ def view_mistakes(data):
     print("\nMistakes by Subject:")
     print(f"{'Subject':<15} | {'Total mistakes':<10} | {'Rate':<10}")
     print("-" *40)
-
     for sub, count in counter.most_common():
         percent = (count / total_errors) * 100
         print(f"{sub:<15} | {count:<10} | {percent:.1f}%")
+
+    print("\n--- All Mistakes (paginated) ---")
+    start = 0
+    while start < total_errors:
+        end = min(start + page_size, total_errors)
+        for i in range(start, end):
+            entry = data[i]
+            print(f"{i+1}. [{entry['subject']}] {entry['mistake']} -> {entry['fix']} ({entry['date']})")
+        start = end
+        if start < total_errors:
+            input("Press Enter to see more...")
 
 def edit_or_delete_mistake(data):
     if not data:

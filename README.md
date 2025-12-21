@@ -26,7 +26,7 @@
 **Key highlights:**
 
 * **Simple & Fast**: Runs directly in the terminal with a clean ASCII interface.
-* **Persistent Storage**: Data is automatically saved to `mistakes.json`.
+* **Persistent Storage**: Data is automatically saved to `mistakes.json` with backup.
 * **Smart Analytics**: Automatically calculates error rates by subject.
 * **No Dependencies**: Uses only Python standard libraries.
 
@@ -36,9 +36,10 @@
 
 * ✍️ **Log Mistakes**: Record subject, error description, and the solution.
 * 📊 **Statistics**: View error breakdown and percentage by subject.
-* 💾 **Auto-Save**: Never lose your data; saves instantly to JSON.
+* 🖊 **Edit/Delete Mistakes**: Modify or remove mistakes if needed.
+* 💾 **Auto-Save & Backup**: Data is saved instantly with a backup.
 * 🕒 **Timestamping**: Automatically records the date of the error.
-
+* 🔢 **Pagination**: View mistakes in pages when dataset is large.
 ---
 
 ### 🚀 Installation
@@ -58,11 +59,12 @@ python Mistake_Tracker.py
 
 ### ▶️ Usage
 
-| Option                     | Description                                  |
-| -------------------------- | -------------------------------------------- |
-| `1. [+] Add a New Mistake` | Input subject, mistake details, and fix.     |
-| `2. [*] View Mistakes`     | Show total errors and statistical breakdown. |
-| `3. [x] Exit`              | Close the program safely.                    |
+| Option                       | Description                                  |
+| ---------------------------- | -------------------------------------------- |
+| `1. [+] Add a New Mistake`   | Input subject, mistake details, and fix.     |
+| `2. [*] View Mistakes`       | Show total errors and statistical breakdown. |
+| `3. [!] Edit/Delete Mistake` | Edit or delete existing mistakes.            |
+| `4. [X] Exit`                | Close the program safely.                    |
 
 ---
 
@@ -72,9 +74,10 @@ python Mistake_Tracker.py
 === [ Mistake Tracker ] ===
 1. [+] Add a New Mistake
 2. [*] View Mistakes
-3. [x] Exit
+3. [!] Edit/Delete Mistake
+4. [X] Exit
 
-Choose an option (1-3): 2
+Choose an option (1-4): 2
 
 --- [*] View Mistakes ---
 Total mistakes recorded: 15
@@ -85,6 +88,12 @@ Subject         | Total mistakes | Rate
 Math            | 10             | 66.7%
 English         | 3              | 20.0%
 Coding          | 2              | 13.3%
+
+--- All Mistakes (paginated) ---
+1. [Math] Wrong formula -> Correct formula (22-12-2025)
+2. [Math] Calculation error -> Check steps (22-12-2025)
+...
+Press Enter to see more...
 ```
 
 ---
@@ -107,7 +116,7 @@ Author: **Minx-nie**
 **Điểm nổi bật:**
 
 * **Đơn giản & Nhanh**: Chạy trực tiếp trên terminal, giao diện ASCII thân thiện.
-* **Lưu trữ tự động**: Dữ liệu được lưu vào file `mistakes.json`, không mất khi tắt máy.
+* **Lưu trữ tự động & Backup**: Dữ liệu được lưu vào file `mistakes.json` và có bản sao backup.
 * **Thống kê thông minh**: Tự động tính toán tỷ lệ % lỗi sai theo từng môn.
 * **Không cần cài đặt**: Chỉ sử dụng thư viện có sẵn của Python.
 
@@ -117,8 +126,10 @@ Author: **Minx-nie**
 
 * ✍️ **Ghi lỗi**: Nhập môn học, mô tả lỗi và cách khắc phục.
 * 📊 **Thống kê**: Xem tổng số lỗi và tỷ lệ phần trăm theo môn.
-* 💾 **Auto-Save**: Lưu dữ liệu tức thì dưới dạng JSON.
+* 🖊 **Sửa/Xóa lỗi**: Chỉnh sửa hoặc xóa các lỗi đã nhập.
+* 💾 **Auto-Save & Backup**: Dữ liệu được lưu tức thì kèm backup.
 * 🕒 **Thời gian**: Tự động lưu ngày tháng khi ghi lỗi.
+* 🔢 **Phân trang**: Xem lỗi theo trang khi dữ liệu lớn.
 
 ---
 
@@ -139,11 +150,12 @@ python Mistake_Tracker.py
 
 ### ▶️ Hướng dẫn sử dụng
 
-| Lựa chọn                   | Mô tả                               |
-| -------------------------- | ----------------------------------- |
-| `1. [+] Add a New Mistake` | Thêm lỗi mới (Môn, Lỗi, Cách sửa).  |
-| `2. [*] View Mistakes`     | Xem thống kê số lượng và tỷ lệ lỗi. |
-| `3. [x] Exit`              | Thoát chương trình.                 |
+| Lựa chọn                     | Mô tả                                        |
+| ---------------------------- | -------------------------------------------- |
+| `1. [+] Add a New Mistake`   | Thêm lỗi mới (Môn, Lỗi, Cách sửa).           |
+| `2. [*] View Mistakes`       | Xem tổng số lỗi và tỷ lệ phần trăm theo môn. |
+| `3. [!] Edit/Delete Mistake` | Sửa hoặc xóa các lỗi đã ghi.                 |
+| `4. [X] Exit`                | Thoát chương trình an toàn.                  |
 
 ---
 
@@ -153,9 +165,10 @@ python Mistake_Tracker.py
 === [ Mistake Tracker ] ===
 1. [+] Add a New Mistake
 2. [*] View Mistakes
-3. [x] Exit
+3. [!] Edit/Delete Mistake
+4. [X] Exit
 
-Choose an option (1-3): 2
+Choose an option (1-4): 2
 
 --- [*] View Mistakes ---
 Total mistakes recorded: 15
@@ -166,6 +179,12 @@ Subject         | Total mistakes | Rate
 Math            | 10             | 66.7%
 English         | 3              | 20.0%
 Coding          | 2              | 13.3%
+
+--- All Mistakes (paginated) ---
+1. [Math] Wrong formula -> Correct formula (22-12-2025)
+2. [Math] Calculation error -> Check steps (22-12-2025)
+...
+Press Enter to see more...
 ```
 
 ---
@@ -175,3 +194,4 @@ Coding          | 2              | 13.3%
 MIT License
 Tác giả: **Minx-nie**
 
+---
