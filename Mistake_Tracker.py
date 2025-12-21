@@ -13,7 +13,10 @@ def load_data():
     try:
         with open(DATA_FILE, "r", encoding="utf-8") as f:
             return json.load(f)
-    except:
+    except json.JSONDecodeError:
+        return []
+    except OSError as e:
+        print(f"[!] Cannot read data file: {e}")
         return []
     
 def save_data(data):
@@ -24,7 +27,7 @@ def save_data(data):
 # ================ DATA MANAGEMENT ================
 
 def add_mistake(data):
-    print("\n--- ✍️  Add a New Mistake ---")
+    print("\n--- [+]  Add a New Mistake ---")
     subject = input("Subject: ").strip()
     mistake = input("Mistake Description: ").strip()
     fix = input("Fix/Correction: ").strip()
@@ -40,11 +43,11 @@ def add_mistake(data):
 
     data.append(new_entry)
     save_data(data)
-    print("✅ Mistake added successfully!\n")
+    print("[OK] Mistake added successfully!\n")
 
 
 def view_mistakes(data):
-    print("\n--- 📚 View Mistakes ---")
+    print("\n--- [*] View Mistakes ---")
     if not data:
         print("No mistakes recorded yet.\n")
         return
