@@ -1,6 +1,7 @@
 import json
 import os
 import shutil
+import re
 from datetime import datetime
 from collections import Counter
 
@@ -14,7 +15,15 @@ def load_data():
 
     try:
         with open(DATA_FILE, "r", encoding="utf-8") as f:
-            return json.load(f)
+            raw_data = json.load(f)
+        
+        valid_data = []
+        for entry in raw_data:
+            if all(key in entry for key in ("subject", "mistake", "fix", "date")):
+                valid_data.append(entry)
+            else:
+                print(f"[!] Invalid entry skipped: {entry}")
+        return valid_data
     except json.JSONDecodeError:
         print("[!] Data file is corrupted (invalid JSON).")
         return []
@@ -45,12 +54,15 @@ def save_data(data):
 # ================= INPUT VALIDATION =================
 
 def get_non_empty_input(prompt, max_length=200):
+    pattern = re.compile(r'^[\w\s.,!?-]+$')
     while True:
         value = input(prompt).strip()
         if not value:
             print("[!] Input cannot be empty. Please try again.")
         elif len(value) > max_length:
             print(f"[!] Input too long (max {max_length} characters).")
+        elif not pattern.match(value):
+            print("[!] Invalid characters detected. Please use only letters, numbers, spaces, and basic punctuation.")
         else:
             return value
 
