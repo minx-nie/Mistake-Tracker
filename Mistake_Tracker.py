@@ -1,7 +1,6 @@
 import json
 import os
 import shutil
-import re
 from datetime import datetime
 from collections import Counter
 
@@ -16,7 +15,7 @@ def load_data():
     try:
         with open(DATA_FILE, "r", encoding="utf-8") as f:
             raw_data = json.load(f)
-        
+
         valid_data = []
         for entry in raw_data:
             if all(key in entry for key in ("subject", "mistake", "fix", "date")):
@@ -53,18 +52,30 @@ def save_data(data):
 
 # ================= INPUT VALIDATION =================
 
+def _contains_control_chars(s: str) -> bool:
+    for ch in s:
+        code = ord(ch)
+        if code < 32 or code == 127:
+            return True
+    return False
+
 def get_non_empty_input(prompt, max_length=200):
-    pattern = re.compile(r'^[\w\s.,!?-]+$')
     while True:
         value = input(prompt).strip()
+
         if not value:
             print("[!] Input cannot be empty. Please try again.")
-        elif len(value) > max_length:
+            continue
+
+        if len(value) > max_length:
             print(f"[!] Input too long (max {max_length} characters).")
-        elif not pattern.match(value):
-            print("[!] Invalid characters detected. Please use only letters, numbers, spaces, and basic punctuation.")
-        else:
-            return value
+            continue
+
+        if _contains_control_chars(value):
+            print("[!] Invalid control characters detected. Please remove them and try again.")
+            continue
+
+        return value
 
 # ================= CORE FUNCTIONS =================
 
@@ -101,7 +112,7 @@ def view_mistakes(data, page_size=10):
 
     print("\nMistakes by Subject:")
     print(f"{'Subject':<15} | {'Total mistakes':<10} | {'Rate':<10}")
-    print("-" *40)
+    print("-" * 40)
     for sub, count in counter.most_common():
         percent = (count / total_errors) * 100
         print(f"{sub:<15} | {count:<10} | {percent:.1f}%")
