@@ -5,6 +5,8 @@ from datetime import datetime
 from collections import Counter
 
 DATA_FILE = 'mistakes.json'
+BACKUP_DIR = 'backups'
+MAX_BACKUPS = 20
 
 # ================= DATA MANAGEMENT ================
 
@@ -24,7 +26,10 @@ def load_data():
                 print(f"[!] Invalid entry skipped: {entry}")
         return valid_data
     except json.JSONDecodeError:
-        print("[!] Data file is corrupted (invalid JSON).")
+        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+        corrupt_file = f"{DATA_FILE}.corrupted.{timestamp}"
+        os.rename(DATA_FILE, corrupt_file)
+        print(f"[!] Data file is corrupted. Renamed to {corrupt_file}")
         return []
     except OSError as e:
         print(f"[!] Cannot read data file: {e}")
@@ -32,14 +37,32 @@ def load_data():
 
 def backup_data():
     if os.path.exists(DATA_FILE):
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        backup_file = f"{DATA_FILE}.{timestamp}.bak"
-        try:
-            shutil.copy2(DATA_FILE, backup_file)
-            print(f"[!] Backup created at {backup_file}")
-        except OSError as e:
-            print(f"[!] Failed to create backup: {e}")
+        return
+    os.makedirs(BACKUP_DIR, exist_ok=True)
 
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    backup_file = os.path.join(BACKUP_DIR, f"{DATA_FILE}.{timestamp}.bak")
+    try:
+        shutil.copy2(DATA_FILE, backup_file)
+    except OSError as e:
+        print(f"[!] Failed to create backup: {e}")
+        return
+    
+    try:
+        backups = sorted(
+            [
+                os.path.join(BACKUP_DIR, f)
+                for f in os.listdir(BACKUP_DIR)
+                if f.startswith(DATA_FILE) and f.endswith(".bak")
+            ],
+            reverse=True
+        )
+
+        for old_backup in backups[MAX_BACKUPS:]:
+            os.remove(old_backup)
+    except OSError as e:
+        pass
+    
 def save_data(data):
     backup_data()
     tmp_file = DATA_FILE + ".tmp"
@@ -158,10 +181,21 @@ def edit_or_delete_mistake(data):
             print("[!] Mistake deleted.")
     elif action == 'e':
         print("Leave blank to keep current value.")
-        subject = input(f"Subject [{entry['subject']}]: ").strip() or entry['subject']
-        mistake = input(f"Mistake [{entry['mistake']}]: ").strip() or entry['mistake']
-        fix = input(f"Fix [{entry['fix']}]: ").strip() or entry['fix']
-        entry.update({"subject": subject, "mistake": mistake, "fix": fix})
+        subject = input(f"Subject [{entry['subject']}]: ").strip()
+        if subject:
+            subject = get_non_empty_input("Re-enter Subject: ")  
+
+        mistake = input(f"Mistake [{entry['mistake']}]: ").strip()
+        if mistake:
+            mistake = get_non_empty_input("Re-enter mistake: ")
+
+        fix = input(f"Fix [{entry['fix']}]: ").strip()
+        if fix:
+            fix = get_non_empty_input("Re-enter fix: ")
+
+        entry["subject"] = subject or entry["subject"]
+        entry["mistake"] = mistake or entry["mistake"]
+        entry["fix"] = fix or entry["fix"]
         save_data(data)
         print("[!] Mistake updated.")
     else:
