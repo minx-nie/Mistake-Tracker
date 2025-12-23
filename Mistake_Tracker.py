@@ -1,8 +1,8 @@
 import json
 import os
 import shutil
-from datetime import datetime
 from collections import Counter
+from datetime import datetime
 
 DATA_FILE = "mistakes.json"
 BACKUP_DIR = "backups"
@@ -16,7 +16,7 @@ def load_data():
         return []
 
     try:
-        with open(DATA_FILE, "r", encoding="utf-8") as f:
+        with open(DATA_FILE, encoding="utf-8") as f:
             raw_data = json.load(f)
 
         valid_data = []
