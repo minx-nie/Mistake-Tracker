@@ -2,7 +2,6 @@
 
 import json
 import os
-import tempfile
 from pathlib import Path
 
 import pytest
@@ -67,7 +66,7 @@ class TestSaveData:
     def test_save_creates_file(self, temp_data_file: str, sample_data: list) -> None:
         """Save creates the data file."""
         result = save_data(sample_data, temp_data_file)
-        
+
         assert result is True
         assert os.path.exists(temp_data_file)
 
