@@ -1,22 +1,58 @@
-# --- Python cache ---
+# Python
 __pycache__/
 *.py[cod]
 *$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
 
-# --- Virtual environment ---
-venv/
-.venv/
+# Virtual environments
+.env
+.venv
 env/
+venv/
 ENV/
 
-# --- Mistake Tracker data (user files) ---
-mistakes.json
-mistakes.json.bak
-*.tmp
-
-# --- OS / Editor files ---
-.DS_Store
-.vscode/
+# IDE
 .idea/
-*.sublime-project
-*.sublime-workspace
+.vscode/
+*.swp
+*.swo
+
+# Testing
+.coverage
+htmlcov/
+.tox/
+.nox/
+.pytest_cache/
+coverage.xml
+
+# Mypy
+.mypy_cache/
+
+# Ruff
+.ruff_cache/
+
+# Data files (for local development)
+mistakes.json
+backups/
+*.bak
+*.corrupt.*
+
+# OS
+.DS_Store
+Thumbs.db
