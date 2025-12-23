@@ -2,8 +2,6 @@
 
 from __future__ import annotations
 
-from collections import Counter
-
 from mistake_tracker.data import (
     MistakeEntry,
     add_mistake,
@@ -106,7 +104,7 @@ def cmd_view(data: list[MistakeEntry], page_size: int = 10) -> None:
         print(f"{subject.title()[:20]:<20} │ {count:>5} │ {rate:>5.1f}%")
 
     # List all mistakes with pagination
-    print(f"\n📝 All Mistakes")
+    print("\n📝 All Mistakes")
     print("━" * 50)
 
     for i in range(0, total, page_size):
