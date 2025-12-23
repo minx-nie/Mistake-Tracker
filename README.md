@@ -4,108 +4,70 @@
 
 [![Python](https://img.shields.io/badge/Python-3.9+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://python.org)
 [![License](https://img.shields.io/badge/License-MIT-22C55E?style=for-the-badge)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-FF6B6B?style=for-the-badge)](https://github.com/ThanhNguyxn/Mistake-Tracker/pulls)
-
-[![Tests](https://img.shields.io/github/actions/workflow/status/ThanhNguyxn/Mistake-Tracker/ci.yml?branch=main&label=Tests&style=flat-square&logo=github)](https://github.com/ThanhNguyxn/Mistake-Tracker/actions)
-[![Code Style](https://img.shields.io/badge/code%20style-ruff-orange?style=flat-square)](https://github.com/astral-sh/ruff)
-[![Type Checked](https://img.shields.io/badge/type%20checked-mypy-blue?style=flat-square)](https://mypy-lang.org/)
-[![codecov](https://img.shields.io/codecov/c/github/ThanhNguyxn/Mistake-Tracker?style=flat-square&logo=codecov)](https://codecov.io/gh/ThanhNguyxn/Mistake-Tracker)
+[![Tests](https://img.shields.io/github/actions/workflow/status/minx-nie/Mistake-Tracker/ci.yml?branch=main&label=Tests&style=for-the-badge&logo=github)](https://github.com/minx-nie/Mistake-Tracker/actions)
 
 **🎯 Track your learning mistakes. Identify weak points. Improve efficiently.**
-
-[Features](#-features) • [Installation](#-installation) • [Usage](#-usage) • [Contributing](#-contributing)
-
----
-
-<img src="https://raw.githubusercontent.com/Tarikul-Islam-Anik/Animated-Fluent-Emojis/master/Emojis/Objects/Bookmark%20Tabs.png" alt="Bookmark Tabs" width="100" />
 
 </div>
 
 ---
 
-## ✨ Features
+## 📖 Mục lục
 
-<table>
-<tr>
-<td>
-
-### 📝 **Log Mistakes**
-Record subject, error description, and solution with automatic timestamps.
-
-### 📊 **Smart Analytics**
-View error breakdown and percentage by subject to identify weak points.
-
-### 🔍 **Search & Filter**
-Find mistakes quickly with keyword search across all entries.
-
-</td>
-<td>
-
-### ✏️ **Edit & Delete**
-Modify or remove entries when needed with confirmation prompts.
-
-### 💾 **Auto-Backup**
-Data is saved instantly with automatic backup rotation (20 versions).
-
-### 📄 **Pagination**
-Browse through large datasets with paginated view (10 items/page).
-
-</td>
-</tr>
-</table>
+- [Giới thiệu](#-giới-thiệu)
+- [Cài đặt](#-cài-đặt)
+- [Hướng dẫn sử dụng](#-hướng-dẫn-sử-dụng)
+- [Cấu trúc dự án](#-cấu-trúc-dự-án)
+- [Đóng góp](#-đóng-góp)
 
 ---
 
-## 🚀 Installation
+## 📌 Giới thiệu
 
-### Option 1: Quick Start
+**Mistake Tracker** là công cụ dòng lệnh (CLI) giúp học sinh, sinh viên ghi lại và theo dõi các lỗi sai trong quá trình học tập.
+
+### ✨ Tính năng chính
+
+| Tính năng | Mô tả |
+|-----------|-------|
+| ✍️ **Ghi lỗi** | Nhập môn học, mô tả lỗi và cách khắc phục |
+| 📊 **Thống kê** | Xem tỷ lệ % lỗi theo từng môn học |
+| 🔍 **Tìm kiếm** | Lọc lỗi theo từ khóa |
+| ✏️ **Sửa/Xóa** | Chỉnh sửa hoặc xóa các lỗi đã ghi |
+| 💾 **Auto-backup** | Tự động sao lưu dữ liệu (20 bản gần nhất) |
+
+---
+
+## 🚀 Cài đặt
+
+### Cách 1: Chạy trực tiếp
 
 ```bash
-# Clone the repository
-git clone https://github.com/ThanhNguyxn/Mistake-Tracker.git
+# Clone repo
+git clone https://github.com/minx-nie/Mistake-Tracker.git
 cd Mistake-Tracker
 
-# Run directly
+# Chạy
 python -m mistake_tracker
 ```
 
-### Option 2: Install as Package
+### Cách 2: Cài đặt như package
 
 ```bash
-# Install in editable mode
+# Cài đặt
 pip install -e .
 
-# Run from anywhere
+# Chạy từ bất kỳ đâu
 mistake-tracker
-```
-
-### Option 3: Development Setup
-
-```bash
-# Install with dev dependencies
-pip install -e ".[dev]"
-
-# Setup pre-commit hooks
-pre-commit install
-
-# Run tests
-pytest tests/ -v
 ```
 
 ---
 
-## 📖 Usage
+## 📖 Hướng dẫn sử dụng
 
-### Menu Options
+### Menu chính
 
-| Option | Icon | Description |
-|--------|------|-------------|
-| **1** | ➕ | Add a new mistake with subject, description, and fix |
-| **2** | 📋 | View all mistakes with statistics and filtering |
-| **3** | ✏️ | Edit or delete existing entries |
-| **4** | 🚪 | Exit the program safely |
-
-### Example Session
+Khi chạy chương trình, bạn sẽ thấy menu:
 
 ```
 ╔══════════════════════════════════════╗
@@ -117,79 +79,112 @@ pytest tests/ -v
 ║  [4] 🚪 Exit                         ║
 ╚══════════════════════════════════════╝
 
-Choose (1-4): 2
-
-📊 Statistics
-━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
-Total Mistakes: 15
-
-Subject          │ Count │ Rate
-─────────────────┼───────┼───────
-Math             │ 10    │ 66.7%
-English          │ 3     │ 20.0%
-Coding           │ 2     │ 13.3%
+Choose (1-4):
 ```
 
 ---
 
-## 🛠️ Tech Stack
+### 1️⃣ Thêm lỗi mới
 
-| Tool | Purpose |
-|------|---------|
-| ![Python](https://img.shields.io/badge/-Python-3776AB?style=flat-square&logo=python&logoColor=white) | Core language |
-| ![Pytest](https://img.shields.io/badge/-Pytest-0A9EDC?style=flat-square&logo=pytest&logoColor=white) | Testing framework |
-| ![Ruff](https://img.shields.io/badge/-Ruff-D7303C?style=flat-square&logo=ruff&logoColor=white) | Linting & formatting |
-| ![Mypy](https://img.shields.io/badge/-Mypy-2A6DB2?style=flat-square&logo=python&logoColor=white) | Type checking |
-| ![GitHub Actions](https://img.shields.io/badge/-GitHub_Actions-2088FF?style=flat-square&logo=github-actions&logoColor=white) | CI/CD |
+Chọn `1` → Nhập thông tin:
+
+```
+━━━ ➕ Add New Mistake ━━━
+Subject: math
+Mistake: Nhầm công thức tính diện tích
+Fix: S = pi * r^2 không phải 2*pi*r
+
+✅ Mistake added successfully!
+```
 
 ---
 
-## 📂 Project Structure
+### 2️⃣ Xem danh sách lỗi
+
+Chọn `2` → Xem thống kê và danh sách:
+
+```
+━━━ 📋 View Mistakes ━━━
+🔍 Filter by keyword (Enter to skip):
+
+📊 Statistics (Total: 15)
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+Subject              │ Count │  Rate
+─────────────────────┼───────┼───────
+Math                 │    10 │ 66.7%
+English              │     3 │ 20.0%
+Coding               │     2 │ 13.3%
+
+📝 All Mistakes
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+1. [Math] Nhầm công thức → S = pi*r^2 (2024-12-23)
+2. [Math] Sai dấu → Kiểm tra lại các bước (2024-12-22)
+...
+```
+
+**Lọc theo từ khóa:** Nhập từ khóa để tìm lỗi cụ thể.
+
+---
+
+### 3️⃣ Sửa/Xóa lỗi
+
+Chọn `3` → Chọn số thứ tự → `e` để sửa hoặc `d` để xóa:
+
+```
+━━━ ✏️ Edit/Delete ━━━
+1. [Math] Nhầm công thức
+2. [English] Sai ngữ pháp
+
+Choose number (0 = cancel): 1
+(e)dit / (d)elete: e
+
+💡 Leave blank to keep current value.
+Subject [math]:
+Mistake [Nhầm công thức]: Nhầm công thức tính thể tích
+Fix [S = pi*r^2]: V = 4/3 * pi * r^3
+
+✅ Updated.
+```
+
+---
+
+### 4️⃣ Thoát
+
+Chọn `4` để thoát chương trình an toàn.
+
+---
+
+## 📂 Cấu trúc dự án
 
 ```
 Mistake-Tracker/
-├── 📁 src/
-│   └── 📁 mistake_tracker/
-│       ├── __init__.py      # Package init
-│       ├── __main__.py      # Entry point
-│       ├── cli.py           # CLI interface
-│       └── data.py          # Data management
-├── 📁 tests/
-│   └── test_tracker.py      # Unit tests
-├── 📁 .github/
-│   └── 📁 workflows/
-│       └── ci.yml           # GitHub Actions CI
-├── pyproject.toml           # Project config
-├── ruff.toml                # Linter config
-├── .pre-commit-config.yaml  # Pre-commit hooks
-└── README.md                # Documentation
+├── src/mistake_tracker/    # Source code
+│   ├── __init__.py
+│   ├── __main__.py         # Entry point
+│   ├── cli.py              # Giao diện CLI
+│   └── data.py             # Quản lý dữ liệu
+├── tests/                  # Unit tests
+├── .github/workflows/      # CI/CD
+├── pyproject.toml          # Cấu hình dự án
+└── README.md
 ```
 
 ---
 
-## 🤝 Contributing
+## 🤝 Đóng góp
 
-Contributions are welcome! Please check out our [Contributing Guide](CONTRIBUTING.md).
-
-1. **Fork** the repository
-2. **Create** your feature branch (`git checkout -b feature/amazing`)
-3. **Commit** your changes (`git commit -m 'Add amazing feature'`)
-4. **Push** to the branch (`git push origin feature/amazing`)
-5. **Open** a Pull Request
+Xem [CONTRIBUTING.md](CONTRIBUTING.md) để biết cách đóng góp.
 
 ---
 
 ## 📄 License
 
-This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for details.
+MIT License - Xem [LICENSE](LICENSE) để biết thêm chi tiết.
 
 ---
 
 <div align="center">
 
 **Made with ❤️ by [Minx-nie](https://github.com/minx-nie)**
-
-[![Star](https://img.shields.io/github/stars/ThanhNguyxn/Mistake-Tracker?style=social)](https://github.com/ThanhNguyxn/Mistake-Tracker/stargazers)
-[![Fork](https://img.shields.io/github/forks/ThanhNguyxn/Mistake-Tracker?style=social)](https://github.com/ThanhNguyxn/Mistake-Tracker/network/members)
 
 </div>
