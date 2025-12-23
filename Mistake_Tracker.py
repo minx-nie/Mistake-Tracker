@@ -1,22 +1,50 @@
 import json
 import os
 import shutil
-import uuid
-from datetime import datetime
 from collections import Counter
+from datetime import datetime
 
 DATA_FILE = "mistakes.json"
 BACKUP_DIR = "backups"
 MAX_BACKUPS = 20
 DATE_FORMAT = "%Y-%m-%d"
 
-def input_clean(prompt, required=True):
-    while True:
-        value = input(prompt).strip()
-        if not value and required:
-            print("[!] Input cannot be empty.")
-            continue
-        return value
+# ================= DATA MANAGEMENT =================
+
+def load_data():
+    if not os.path.exists(DATA_FILE):
+        return []
+
+    try:
+        with open(DATA_FILE, encoding="utf-8") as f:
+            raw_data = json.load(f)
+
+        valid_data = []
+        for entry in raw_data:
+            if not all(k in entry for k in ("subject", "mistake", "fix", "date")):
+                print(f"[!] Invalid entry skipped: {entry}")
+                continue
+
+            try:
+                datetime.strptime(entry["date"], DATE_FORMAT)
+            except ValueError:
+                print(f"[!] Invalid date skipped: {entry}")
+                continue
+
+            valid_data.append(entry)
+
+        return valid_data
+
+    except json.JSONDecodeError:
+        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+        corrupt = f"{DATA_FILE}.corrupt.{ts}"
+        os.rename(DATA_FILE, corrupt)
+        print(f"[!] Data corrupted. Renamed to {corrupt}")
+        return []
+
+    except OSError as e:
+        print(f"[!] Cannot read data file: {e}")
+        return []
 
 def normalize_subject(subject: str) -> str:
     return subject.strip().lower()
