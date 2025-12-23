@@ -40,10 +40,10 @@ Find mistakes quickly with keyword search across all entries.
 ### ✏️ Edit & Delete
 Modify or remove entries when needed with confirmation prompts.
 
-### � Auto-Backup
+### 💾 Auto-Backup
 Data is saved instantly with automatic backup rotation (20 versions).
 
-### � Pagination
+### 📄 Pagination
 Browse through large datasets with paginated view (10 items/page).
 
 </td>
@@ -54,31 +54,45 @@ Browse through large datasets with paginated view (10 items/page).
 
 ## 🚀 Installation
 
-### Option 1: Quick Start
+### Option 1: Quick Start (Recommended)
 
 ```bash
-# Clone the repository
+# Step 1: Clone the repository
 git clone https://github.com/minx-nie/Mistake-Tracker.git
 cd Mistake-Tracker
 
-# Run directly
+# Step 2: Install the package
+pip install -e .
+
+# Step 3: Run the program
 python -m mistake_tracker
 ```
 
-### Option 2: Install as Package
+> ⚠️ **Important:** You must run `pip install -e .` before using `python -m mistake_tracker`, otherwise you'll get "No module named mistake_tracker" error.
+
+---
+
+### Option 2: Run Without Installing
+
+If you prefer not to install, run the standalone script directly:
 
 ```bash
-# Install in editable mode
-pip install -e .
+git clone https://github.com/minx-nie/Mistake-Tracker.git
+cd Mistake-Tracker
 
-# Run from anywhere
-mistake-tracker
+# Run standalone script (no install needed)
+python Mistake_Tracker.py
 ```
+
+---
 
 ### Option 3: Development Setup
 
 ```bash
-# Install with dev dependencies
+git clone https://github.com/minx-nie/Mistake-Tracker.git
+cd Mistake-Tracker
+
+# Install with development dependencies
 pip install -e ".[dev]"
 
 # Setup pre-commit hooks
@@ -102,7 +116,7 @@ When you run the program, you'll see this menu:
 ╠══════════════════════════════════════╣
 ║  [1] ➕ Add New Mistake              ║
 ║  [2] 📋 View Mistakes                ║
-║  [3] ✏️  Edit/Delete                 ║
+║  [3] ✏️  Edit/Delete                  ║
 ║  [4] 🚪 Exit                         ║
 ╚══════════════════════════════════════╝
 
@@ -206,6 +220,7 @@ Mistake-Tracker/
 │   └── test_tracker.py  # Unit tests
 ├── 📁 .github/workflows/
 │   └── ci.yml           # GitHub Actions CI
+├── Mistake_Tracker.py   # Standalone script (legacy)
 ├── pyproject.toml       # Project config
 ├── ruff.toml            # Linter config
 └── README.md
