@@ -101,7 +101,7 @@ Press Enter to see more...
 ### 📄 License
 
 MIT License
-Author: **Minx-nie**
+Author: **minx-nie**
 
 ---
 
@@ -192,6 +192,6 @@ Press Enter to see more...
 ### 📄 Bản quyền
 
 MIT License
-Tác giả: **Minx-nie**
+Tác giả: **minx-nie**
 
 ---
