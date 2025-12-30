@@ -78,7 +78,8 @@ def cmd_view(data: list[MistakeEntry], page_size: int = 10) -> None:
     keyword = input("🔍 Filter by keyword (Enter to skip): ").strip().lower()
     if keyword:
         data = [
-            e for e in data
+            e
+            for e in data
             if keyword in e["mistake"].lower()
             or keyword in e["fix"].lower()
             or keyword in e["subject"]
@@ -108,11 +109,8 @@ def cmd_view(data: list[MistakeEntry], page_size: int = 10) -> None:
     print("━" * 50)
 
     for i in range(0, total, page_size):
-        for idx, e in enumerate(data[i:i + page_size], start=i + 1):
-            print(
-                f"{idx}. [{e['subject'].title()}] "
-                f"{e['mistake']} → {e['fix']} ({e['date']})"
-            )
+        for idx, e in enumerate(data[i : i + page_size], start=i + 1):
+            print(f"{idx}. [{e['subject'].title()}] {e['mistake']} → {e['fix']} ({e['date']})")
         if i + page_size < total:
             input("\n⏩ Press Enter for more...")
 

@@ -11,6 +11,7 @@ DATE_FORMAT = "%Y-%m-%d"
 
 # ================= UTILITIES =================
 
+
 def input_clean(prompt: str, required: bool = True) -> str:
     while True:
         value = input(prompt).strip()
@@ -18,10 +19,13 @@ def input_clean(prompt: str, required: bool = True) -> str:
             return value
         print("[!] Input cannot be empty.")
 
+
 def normalize_subject(subject: str) -> str:
     return subject.strip().lower()
 
+
 # ================= DATA MANAGEMENT =================
+
 
 def backup_data():
     if not os.path.exists(DATA_FILE):
@@ -35,11 +39,7 @@ def backup_data():
         shutil.copy2(DATA_FILE, backup_file)
 
         backups = sorted(
-            (
-                os.path.join(BACKUP_DIR, f)
-                for f in os.listdir(BACKUP_DIR)
-                if f.endswith(".bak")
-            ),
+            (os.path.join(BACKUP_DIR, f) for f in os.listdir(BACKUP_DIR) if f.endswith(".bak")),
             reverse=True,
         )
 
@@ -47,6 +47,7 @@ def backup_data():
             os.remove(old)
     except OSError:
         pass
+
 
 def save_data(data):
     backup_data()
@@ -65,6 +66,7 @@ def save_data(data):
             os.remove(tmp_file)
         print("[!] Failed to save data.")
         return False
+
 
 def load_data():
     if not os.path.exists(DATA_FILE):
@@ -102,7 +104,9 @@ def load_data():
     except OSError:
         return []
 
+
 # ================= FEATURES =================
+
 
 def add_mistake(data):
     print("\n--- [+] Add a New Mistake ---")
@@ -123,6 +127,7 @@ def add_mistake(data):
     if save_data(data):
         print(f"[OK] Mistake added! (ID: {new_entry['id']})")
 
+
 def view_mistakes(data):
     print("\n--- [*] View Mistakes ---")
 
@@ -137,13 +142,11 @@ def view_mistakes(data):
     results = data
     if choice == "2":
         keyword = input("Keyword: ").strip().lower()
-        results = [
-            x for x in data
-            if keyword in x["subject"] or keyword in x["mistake"]
-        ]
+        results = [x for x in data if keyword in x["subject"] or keyword in x["mistake"]]
 
     for entry in sorted(results, key=lambda x: x["date"], reverse=True):
         print(f"{entry['id']} | {entry['date']} | [{entry['subject']}] {entry['mistake']}")
+
 
 def edit_or_delete_mistake(data):
     if not data:
@@ -158,7 +161,7 @@ def edit_or_delete_mistake(data):
     else:
         print("[!] ID not found.")
         return
-    
+
     i = _i
 
     action = input("Edit (e) / Delete (d): ").lower()
@@ -185,7 +188,9 @@ def edit_or_delete_mistake(data):
         save_data(data)
         print("[OK] Updated.")
 
+
 # ================= MAIN =================
+
 
 def main():
     data = load_data()
@@ -210,6 +215,7 @@ def main():
             break
         else:
             print("[!] Invalid choice.")
+
 
 if __name__ == "__main__":
     main()

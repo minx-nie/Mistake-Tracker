@@ -24,9 +24,24 @@ def temp_data_file(tmp_path: Path) -> str:
 def sample_data() -> list[dict]:
     """Sample mistake data for testing."""
     return [
-        {"subject": "math", "mistake": "Wrong formula", "fix": "Check formula", "date": "2024-01-15"},
-        {"subject": "math", "mistake": "Calculation error", "fix": "Double check", "date": "2024-01-16"},
-        {"subject": "english", "mistake": "Grammar issue", "fix": "Review rules", "date": "2024-01-17"},
+        {
+            "subject": "math",
+            "mistake": "Wrong formula",
+            "fix": "Check formula",
+            "date": "2024-01-15",
+        },
+        {
+            "subject": "math",
+            "mistake": "Calculation error",
+            "fix": "Double check",
+            "date": "2024-01-16",
+        },
+        {
+            "subject": "english",
+            "mistake": "Grammar issue",
+            "fix": "Review rules",
+            "date": "2024-01-17",
+        },
     ]
 
 
