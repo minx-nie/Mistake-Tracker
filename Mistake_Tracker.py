@@ -152,12 +152,14 @@ def edit_or_delete_mistake(data):
 
     target_id = input("Enter ID: ").strip()
 
-    for i, entry in enumerate(data):
+    for _i, entry in enumerate(data):
         if entry["id"] == target_id:
             break
     else:
         print("[!] ID not found.")
         return
+    
+    i = _i
 
     action = input("Edit (e) / Delete (d): ").lower()
 
