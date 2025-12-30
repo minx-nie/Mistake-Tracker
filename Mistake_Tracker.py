@@ -1,7 +1,7 @@
 import json
 import os
 import shutil
-from collections import Counter
+import uuid
 from datetime import datetime
 
 DATA_FILE = "mistakes.json"
@@ -9,45 +9,19 @@ BACKUP_DIR = "backups"
 MAX_BACKUPS = 20
 DATE_FORMAT = "%Y-%m-%d"
 
-# ================= DATA MANAGEMENT =================
+# ================= UTILITIES =================
 
-def load_data():
-    if not os.path.exists(DATA_FILE):
-        return []
-
-    try:
-        with open(DATA_FILE, encoding="utf-8") as f:
-            raw_data = json.load(f)
-
-        valid_data = []
-        for entry in raw_data:
-            if not all(k in entry for k in ("subject", "mistake", "fix", "date")):
-                print(f"[!] Invalid entry skipped: {entry}")
-                continue
-
-            try:
-                datetime.strptime(entry["date"], DATE_FORMAT)
-            except ValueError:
-                print(f"[!] Invalid date skipped: {entry}")
-                continue
-
-            valid_data.append(entry)
-
-        return valid_data
-
-    except json.JSONDecodeError:
-        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
-        corrupt = f"{DATA_FILE}.corrupt.{ts}"
-        os.rename(DATA_FILE, corrupt)
-        print(f"[!] Data corrupted. Renamed to {corrupt}")
-        return []
-
-    except OSError as e:
-        print(f"[!] Cannot read data file: {e}")
-        return []
+def input_clean(prompt: str, required: bool = True) -> str:
+    while True:
+        value = input(prompt).strip()
+        if value or not required:
+            return value
+        print("[!] Input cannot be empty.")
 
 def normalize_subject(subject: str) -> str:
     return subject.strip().lower()
+
+# ================= DATA MANAGEMENT =================
 
 def backup_data():
     if not os.path.exists(DATA_FILE):
@@ -59,11 +33,16 @@ def backup_data():
 
     try:
         shutil.copy2(DATA_FILE, backup_file)
-        
+
         backups = sorted(
-            [os.path.join(BACKUP_DIR, f) for f in os.listdir(BACKUP_DIR) if f.endswith(".bak")],
-            reverse=True
+            (
+                os.path.join(BACKUP_DIR, f)
+                for f in os.listdir(BACKUP_DIR)
+                if f.endswith(".bak")
+            ),
+            reverse=True,
         )
+
         for old in backups[MAX_BACKUPS:]:
             os.remove(old)
     except OSError:
@@ -78,6 +57,7 @@ def save_data(data):
             json.dump(data, f, ensure_ascii=False, indent=4)
             f.flush()
             os.fsync(f.fileno())
+
         os.replace(tmp_file, DATA_FILE)
         return True
     except OSError:
@@ -91,36 +71,38 @@ def load_data():
         return []
 
     try:
-        with open(DATA_FILE, "r", encoding="utf-8") as f:
+        with open(DATA_FILE, encoding="utf-8") as f:
             data = json.load(f)
 
         valid_data = []
-        is_modified = False
+        modified = False
 
         for entry in data:
-            if not all(key in entry for key in ("subject", "mistake", "fix", "date")):
+            if not all(k in entry for k in ("subject", "mistake", "fix", "date")):
                 continue
 
             if "id" not in entry:
                 entry["id"] = str(uuid.uuid4())[:8]
-                is_modified = True
-            
+                modified = True
+
             valid_data.append(entry)
 
-        if is_modified:
+        if modified:
             save_data(valid_data)
 
         return valid_data
 
     except json.JSONDecodeError:
-        timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
-        corrupt_file = f"{DATA_FILE}.corrupt.{timestamp}"
-        if os.path.exists(DATA_FILE):
-            os.rename(DATA_FILE, corrupt_file)
-        print(f"[!] Data corrupted. Renamed to {corrupt_file}")
+        ts = datetime.now().strftime("%Y%m%d_%H%M%S")
+        corrupt = f"{DATA_FILE}.corrupt.{ts}"
+        os.rename(DATA_FILE, corrupt)
+        print(f"[!] Data corrupted. Renamed to {corrupt}")
         return []
+
     except OSError:
         return []
+
+# ================= FEATURES =================
 
 def add_mistake(data):
     print("\n--- [+] Add a New Mistake ---")
@@ -128,25 +110,24 @@ def add_mistake(data):
     subject = normalize_subject(input_clean("Subject: "))
     mistake = input_clean("Mistake Description: ")
     fix = input_clean("Fix/Correction: ")
-    today = datetime.now().strftime(DATE_FORMAT)
-    new_id = str(uuid.uuid4())[:8]
 
     new_entry = {
-        "id": new_id,
+        "id": str(uuid.uuid4())[:8],
         "subject": subject,
         "mistake": mistake,
         "fix": fix,
-        "date": today
+        "date": datetime.now().strftime(DATE_FORMAT),
     }
 
     data.append(new_entry)
     if save_data(data):
-        print(f"[OK] Mistake added successfully! (ID: {new_id})")
+        print(f"[OK] Mistake added! (ID: {new_entry['id']})")
 
 def view_mistakes(data):
     print("\n--- [*] View Mistakes ---")
+
     if not data:
-        print("No mistakes recorded yet.\n")
+        print("No mistakes recorded.")
         return
 
     print("1. View All")
@@ -155,80 +136,67 @@ def view_mistakes(data):
 
     results = data
     if choice == "2":
-        keyword = input("Enter keyword: ").strip().lower()
-        results = [x for x in data if keyword in x["subject"] or keyword in x["mistake"]]
+        keyword = input("Keyword: ").strip().lower()
+        results = [
+            x for x in data
+            if keyword in x["subject"] or keyword in x["mistake"]
+        ]
 
-    results = sorted(results, key=lambda x: x["date"], reverse=True)
-
-    print(f"\nFound: {len(results)} entries")
-    for entry in results:
-        print(f"ID: {entry['id']} | {entry['date']} | [{entry['subject']}] {entry['mistake']}")
+    for entry in sorted(results, key=lambda x: x["date"], reverse=True):
+        print(f"{entry['id']} | {entry['date']} | [{entry['subject']}] {entry['mistake']}")
 
 def edit_or_delete_mistake(data):
     if not data:
-        print("No mistakes recorded yet.\n")
+        print("No data available.")
         return
 
-    print("\n--- [*] Edit/Delete Mistakes ---")
-    target_id = input("Enter ID to Edit/Delete: ").strip()
-    
-    found_index = -1
+    target_id = input("Enter ID: ").strip()
+
     for i, entry in enumerate(data):
         if entry["id"] == target_id:
-            found_index = i
             break
-    
-    if found_index == -1:
+    else:
         print("[!] ID not found.")
         return
 
-    entry = data[found_index]
-    print(f"Selected: [{entry['subject']}] {entry['mistake']}")
-    action = input("Enter 'e' to edit, 'd' to delete: ").strip().lower()
+    action = input("Edit (e) / Delete (d): ").lower()
 
     if action == "d":
-        confirm = input("Confirm delete? (y/n): ").strip().lower()
-        if confirm == "y":
-            data.pop(found_index)
+        if input("Confirm delete? (y/n): ").lower() == "y":
+            data.pop(i)
             save_data(data)
-            print("[OK] Mistake deleted.")
+            print("[OK] Deleted.")
+        return
 
-    elif action == "e":
-        print("Leave blank to keep current value.")
+    if action == "e":
+        new_sub = input_clean(f"Subject [{entry['subject']}]: ", False)
+        new_mis = input_clean(f"Mistake [{entry['mistake']}]: ", False)
+        new_fix = input_clean(f"Fix [{entry['fix']}]: ", False)
 
-        new_sub = input_clean(f"Subject [{entry['subject']}]: ", required=False)
         if new_sub:
             entry["subject"] = normalize_subject(new_sub)
-
-        new_mis = input_clean(f"Mistake [{entry['mistake']}]: ", required=False)
         if new_mis:
             entry["mistake"] = new_mis
-
-        new_fix = input_clean(f"Fix [{entry['fix']}]: ", required=False)
         if new_fix:
             entry["fix"] = new_fix
 
         save_data(data)
-        print("[OK] Mistake updated.")
+        print("[OK] Updated.")
+
+# ================= MAIN =================
 
 def main():
-    if os.path.exists(DATA_FILE + ".tmp"):
-        try:
-            os.remove(DATA_FILE + ".tmp")
-        except OSError:
-            pass
-
     data = load_data()
 
     while True:
         print("\n=== Mistake Tracker V2 ===")
-        print(f"Total: {len(data)} records")
-        print("1. Add a New Mistake")
-        print("2. View / Search Mistakes")
-        print("3. Edit/Delete Mistake (by ID)")
+        print(f"Total records: {len(data)}")
+        print("1. Add")
+        print("2. View/Search")
+        print("3. Edit/Delete")
         print("4. Exit")
 
-        choice = input("Choose an option (1-4): ").strip()
+        choice = input("Choice: ").strip()
 
         if choice == "1":
             add_mistake(data)
@@ -237,10 +205,9 @@ def main():
         elif choice == "3":
             edit_or_delete_mistake(data)
         elif choice == "4":
-            print("Goodbye!")
             break
         else:
-            print("[!] Invalid choice. Please try again.")
+            print("[!] Invalid choice.")
 
 if __name__ == "__main__":
     main()

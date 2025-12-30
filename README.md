@@ -248,7 +248,7 @@ This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) 
 
 <div align="center">
 
-**Made with ❤️ by [Minx-nie](https://github.com/minx-nie)**
+**Made with ❤️ by [minx-nie](https://github.com/minx-nie)**
 
 [![Star](https://img.shields.io/github/stars/minx-nie/Mistake-Tracker?style=social)](https://github.com/minx-nie/Mistake-Tracker/stargazers)
 [![Fork](https://img.shields.io/github/forks/minx-nie/Mistake-Tracker?style=social)](https://github.com/minx-nie/Mistake-Tracker/network/members)
